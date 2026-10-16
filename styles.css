@@ -47,12 +47,17 @@ a { color: inherit; }
 }
 
 .header-note,
-.site-footer,
 .muted {
   color: var(--muted);
   font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.site-footer {
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
 }
 
 main {
