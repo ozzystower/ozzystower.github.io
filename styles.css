@@ -34,11 +34,15 @@ a { color: inherit; }
 }
 
 .site-header {
+  align-items: center;
   padding: 28px 0;
   border-bottom: 1px solid var(--line);
 }
 
 .wordmark {
+  margin-left: auto;
+  flex: 0 0 auto;
+  line-height: 0;
   color: var(--accent);
   font-size: 1.35rem;
   font-weight: 800;
@@ -61,10 +65,11 @@ a { color: inherit; }
 }
 
 .wordmark-logo {
-  width: 150px;
-  height: 62px;
-  object-fit: contain;
-  object-position: right center;
+  width: 92px;
+  height: 44px;
+  object-fit: cover;
+  object-position: center;
+  mix-blend-mode: screen;
   display: block;
 }
 
@@ -154,8 +159,8 @@ h1 {
   .header-note { display: none; }
 
   .wordmark-logo {
-    width: 118px;
-    height: 48px;
+    width: 76px;
+    height: 36px;
   }
 
   .hero { min-height: 70vh; padding: 64px 0; }
