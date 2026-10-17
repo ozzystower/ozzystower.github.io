@@ -67,22 +67,31 @@
     ctx.lineWidth = 1.5;
     ctx.beginPath();ctx.moveTo(0,ground);ctx.lineTo(width,ground);ctx.stroke();
 
-    // Already crumpled when it enters. Fall under gravity, hit the ground
-    // at 0.42s, squash on impact, then roll left without ever unfolding.
-    const impactTime = .42 / duration;
-    const onGround = t >= impactTime;
-    const u = clamp(t/impactTime);
+    // A permanent crumpled-paper tumbleweed: wind gusts, brief skitters,
+    // tiny hops, and lots of grounded rolling. Never opens or becomes flat.
+    const impactTime = .36 / duration;
+    const u = clamp(t / impactTime);
     const rolling = clamp((t-impactTime)/(1-impactTime));
-    const startX = width * .81;
-    const x = onGround ? startX - (startX + radius*3)*rolling : startX + 8*u;
-    const y = onGround ? ground-radius : (ground-radius-106) + 106*u*u;
-    const squash = onGround ? .15*Math.exp(-rolling*26)*Math.abs(Math.sin(rolling*52)) : 0;
-    const angle = onGround ? -rolling * (startX + radius*3) / radius : -.3 + u*.45;
+    const startX = width * .85;
+    const distance = startX + radius * 3;
+    // Wind gusts vary the speed without reversing the ball's direction.
+    const drift = rolling + .018*Math.sin(rolling*14)*Math.sin(Math.PI*rolling)
+      + .009*Math.sin(rolling*31)*Math.sin(Math.PI*rolling);
+    const x = t < impactTime ? startX + 5*u : startX-distance*clamp(drift);
+    // Keep the ball touching ground except for three short wind-lifted hops.
+    const gust1 = Math.pow(Math.max(0,1-Math.abs(rolling-.21)/.065),2)*10;
+    const gust2 = Math.pow(Math.max(0,1-Math.abs(rolling-.49)/.05),2)*7;
+    const gust3 = Math.pow(Math.max(0,1-Math.abs(rolling-.73)/.055),2)*11;
+    const hop = gust1+gust2+gust3;
+    const y = t < impactTime ? ground-radius-78*(1-u*u) : ground-radius-hop;
+    const squash = t >= impactTime ? .11*Math.exp(-rolling*28)*Math.abs(Math.sin(rolling*42)) : 0;
+    const angle = t < impactTime ? -.3+u*.5 : -distance*clamp(drift)/radius
+      + .09*Math.sin(rolling*21);
 
     // Contact shadow stays below the falling ball; tighter upon landing.
     ctx.fillStyle = 'rgba(0,0,0,.4)';
     ctx.beginPath();
-    ctx.ellipse(x,ground-2,21+(1-u)*5,4.5,0,0,Math.PI*2);ctx.fill();
+    ctx.ellipse(x,ground-2,21+(1-u)*5+hop*0.15,4.5,0,0,Math.PI*2);ctx.fill();
 
     ctx.save();
     ctx.translate(x,y);
