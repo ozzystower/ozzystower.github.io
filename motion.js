@@ -19,18 +19,20 @@
   let last = 0;
   window.addEventListener('pointermove', (event) => {
     const now = performance.now();
-    if (now - last < 70 || event.clientY > 220) return;
+    if (now - last < 38 || event.clientY > 260) return;
     last = now;
-    const dot = document.createElement('i');
-    dot.className = 'cursor-mark';
-    dot.style.left = `${event.clientX}px`;
-    dot.style.top = `${event.clientY}px`;
-    document.body.append(dot);
-    trail.push(dot);
+    const mark = document.createElement('i');
+    mark.className = 'cursor-mark';
+    mark.style.left = `${event.clientX}px`;
+    mark.style.top = `${event.clientY}px`;
+    mark.style.setProperty('--turn', `${Math.round((Math.random() - 0.5) * 34)}deg`);
+    document.body.append(mark);
+    trail.push(mark);
     window.setTimeout(() => {
-      dot.remove();
-      trail.shift();
-    }, 520);
-    if (trail.length > 8) trail.shift().remove();
+      mark.remove();
+      const index = trail.indexOf(mark);
+      if (index !== -1) trail.splice(index, 1);
+    }, 900);
+    if (trail.length > 14) trail.shift().remove();
   }, { passive: true });
 })();
