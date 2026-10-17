@@ -54,3 +54,14 @@ h1 { max-width: 980px; margin: 0; font-size: clamp(3.2rem, 8vw, 8.5rem); font-we
   .site-footer { align-items: start; grid-template-columns: 1fr; gap: 8px; }
   .footer-mascot { margin-top: 12px; }
 }
+
+/* Selected motion: project cards draw in, sections arrive like pasted sheets, and the header gets a restrained cursor scribble. */
+.manifesto,.works,.contact { opacity: 0; transform: translateY(22px) rotate(-0.5deg); transition: opacity 520ms ease, transform 700ms cubic-bezier(.22,.8,.24,1); }
+.manifesto.is-visible,.works.is-visible,.contact.is-visible { opacity: 1; transform: none; }
+.project-card { position: relative; overflow: hidden; border-color: transparent; }
+.project-card::after { content: ''; position: absolute; inset: 0; border: 1px solid var(--accent); clip-path: inset(0 100% 0 0); transition: clip-path 900ms cubic-bezier(.2,.7,.2,1); pointer-events: none; }
+.project-card.is-visible::after { clip-path: inset(0 0 0 0); }
+.cursor-mark { position: fixed; z-index: 20; width: 8px; height: 3px; background: var(--accent); transform: translate(-50%,-50%) rotate(-14deg); pointer-events: none; animation: cursor-fade 520ms ease-out forwards; }
+@keyframes cursor-fade { from { opacity: .8; } to { opacity: 0; transform: translate(-50%,-50%) rotate(20deg) scale(.4); } }
+@media (max-width: 700px) { .cursor-mark { display: none; } .manifesto,.works,.contact { transform: translateY(14px); } }
+@media (prefers-reduced-motion: reduce) { .manifesto,.works,.contact { opacity: 1; transform: none; transition: none; } .project-card::after,.cursor-mark { display: none; } }
