@@ -70,9 +70,8 @@ h1 { max-width: 980px; margin: 0; font-size: clamp(3.2rem, 8vw, 8.5rem); font-we
 }
 
 /* Current production contact and motion styles, with the development card removed. */
-.project-summary { min-width: 0; }
-.project-name { color: var(--accent); font-size: clamp(1.6rem, 3vw, 2.6rem) !important; font-weight: 700; }
-.project-description { color: var(--muted); }
+.works-stage { position: relative; min-width: 0; height: 260px; overflow: hidden; border-bottom: 1px solid var(--line); }
+#tower-paper { display: block; width: 100%; height: 100%; }
 .contact-form { margin-top: 36px; max-width: 680px; }
 .contact-form label { display: block; margin-bottom: 10px; color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
 .email-row { display: flex; gap: 10px; }
