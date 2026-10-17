@@ -49,8 +49,13 @@
     ctx.clearRect(0,0,w,h); if (!w) return;
     ctx.save(); ctx.translate(paper.x,paper.y); ctx.rotate(paper.angle);
     ctx.fillStyle = '#f5f1e8'; ctx.strokeStyle = '#151515'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(-72,-48); ctx.lineTo(58,-44); ctx.lineTo(70,42); ctx.lineTo(-66,48); ctx.closePath(); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = '#151515'; ctx.font = '700 17px Arial, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('ozzystower',0,6);
+    ctx.beginPath();
+    ctx.moveTo(-64,-18); ctx.lineTo(-46,-43); ctx.lineTo(-15,-35); ctx.lineTo(10,-49); ctx.lineTo(48,-36); ctx.lineTo(68,-9);
+    ctx.lineTo(54,22); ctx.lineTo(28,40); ctx.lineTo(-8,31); ctx.lineTo(-38,43); ctx.lineTo(-68,20); ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = '#aaa49a'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(-42,-38); ctx.lineTo(-25,4); ctx.lineTo(-8,-34); ctx.moveTo(10,-47); ctx.lineTo(18,3); ctx.lineTo(53,-34); ctx.moveTo(-61,18); ctx.lineTo(-18,11); ctx.lineTo(28,38); ctx.moveTo(-8,31); ctx.lineTo(5,-7); ctx.lineTo(54,22); ctx.stroke();
+    ctx.fillStyle = '#151515'; ctx.font = '700 15px Arial, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('ozzystower',0,7);
     ctx.restore();
   };
   const tick = (now) => {
