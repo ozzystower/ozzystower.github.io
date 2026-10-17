@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="ozzystower is an apartment-based studio creating games, apps, and software with a good time and Don't Make Me Think in mind.">
-  <title>ozzystower — Games, Apps &amp; Software</title>
-  <link rel="stylesheet" href="styles.brand-e3bf24a29914.css">
+  <meta name="description" content="ozzystower is an apartment-based studio creating games, apps, and systems with a good time and Don't Make Me Think in mind.">
+  <title>ozzystower — Games, Apps &amp; Systems</title>
+  <link rel="stylesheet" href="styles.brand-e3bf24a29914.css?v=2">
+  <script src="contact.js" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -15,9 +16,9 @@
 
   <main>
     <section class="hero" aria-labelledby="hero-title">
-      <p class="eyebrow">Games, apps, and software</p>
+      <p class="eyebrow">Games, apps, and systems</p>
       <h1 id="hero-title">At the corner of thoughtful and useful, you’ll find ozzystower.</h1>
-      <p class="intro">ozzystower is an apartment-based studio creating games, apps, and software with a good time and “Don’t Make Me Think” in mind.</p>
+      <p class="intro">ozzystower is an apartment-based studio creating games, apps, and systems with a good time and “Don’t Make Me Think” in mind.</p>
     </section>
 
     <section class="manifesto" aria-labelledby="about-title">
@@ -27,9 +28,28 @@
       </div>
     </section>
 
+    <section class="works" aria-labelledby="works-title">
+      <p class="section-label" id="works-title">In the Works</p>
+      <div class="project-card">
+        <p class="project-name">Bot Farm</p>
+        <p class="project-description">A system for coordinating specialized AI agents.</p>
+      </div>
+    </section>
+
     <section class="contact" aria-labelledby="contact-title">
       <p class="section-label" id="contact-title">Contact</p>
-      <p><span class="brand-initial"><span class="visually-hidden">F</span><img src="assets/initial-f.svg" width="100" height="112" alt="" aria-hidden="true"></span>or projects, partnerships, general inquiries, and other excellent nonsense, find ozzystower on ig.</p>
+      <div>
+        <p><span class="brand-initial"><span class="visually-hidden">F</span><img src="assets/initial-f.svg" width="100" height="112" alt="" aria-hidden="true"></span>or projects, partnerships, general inquiries, and other excellent nonsense, find ozzystower on ig.</p>
+        <form class="contact-form" id="contact-form">
+          <label for="email">Email address</label>
+          <div class="email-row">
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            <button type="submit">Start a conversation</button>
+          </div>
+          <input class="trap" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="form-note" id="form-note">This opens your email app addressed to dezd24@gmail.com.</p>
+        </form>
+      </div>
     </section>
   </main>
 
