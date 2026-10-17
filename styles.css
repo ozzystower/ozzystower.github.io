@@ -3,7 +3,7 @@
   --ink: #f5f1e8;
   --muted: #aaa49a;
   --line: rgba(245, 241, 232, 0.2);
-  --accent: #d9ff55;
+  --accent: #dbfb51;
   --bg: #151515;
   --max: 1180px;
 }
@@ -40,7 +40,6 @@ a { color: inherit; }
 }
 
 .wordmark {
-  margin-left: auto;
   flex: 0 0 auto;
   line-height: 0;
   color: var(--accent);
@@ -65,8 +64,8 @@ a { color: inherit; }
 }
 
 .wordmark-logo {
-  width: 92px;
-  height: 44px;
+  width: 220px;
+  height: 110px;
   object-fit: cover;
   object-position: center;
   mix-blend-mode: screen;
@@ -144,9 +143,21 @@ h1 {
 }
 
 .site-footer {
+  position: relative;
   margin-top: 72px;
-  padding: 24px 0 32px;
+  padding: 24px 0 100px;
   border-top: 1px solid var(--line);
+}
+
+.footer-mascot {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  width: 72px;
+  height: 72px;
+  transform: translateX(-50%);
+  object-fit: contain;
+  mix-blend-mode: screen;
 }
 
 @media (max-width: 700px) {
@@ -159,8 +170,8 @@ h1 {
   .header-note { display: none; }
 
   .wordmark-logo {
-    width: 76px;
-    height: 36px;
+    width: 160px;
+    height: 80px;
   }
 
   .hero { min-height: 70vh; padding: 64px 0; }
