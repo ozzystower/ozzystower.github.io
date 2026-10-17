@@ -60,24 +60,12 @@ a { color: inherit; }
   text-transform: uppercase;
 }
 
-.logo-mark {
-  width: 58px;
-  height: 50px;
-  flex: 0 0 auto;
+.wordmark-logo {
+  width: 150px;
+  height: 62px;
+  object-fit: contain;
+  object-position: right center;
   display: block;
-}
-
-.logo-stroke {
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.logo-fill,
-.logo-tooth {
-  fill: var(--accent);
 }
 
 .site-footer {
@@ -165,9 +153,9 @@ h1 {
 
   .header-note { display: none; }
 
-  .logo-mark {
-    width: 50px;
-    height: 44px;
+  .wordmark-logo {
+    width: 118px;
+    height: 48px;
   }
 
   .hero { min-height: 70vh; padding: 64px 0; }
