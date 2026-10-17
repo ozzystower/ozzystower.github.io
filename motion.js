@@ -38,91 +38,81 @@
 })();
 
 
+
 (() => {
   const canvas = document.querySelector('#tower-paper');
   const stage = document.querySelector('.works-stage');
   if (!canvas || !stage) return;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
-  let w = 0, h = 0, dpr = 1, frame = 0;
-  const ideas = ['V1CE', 'LVG', 'NINE LIVES', 'INTENT', 'BOT FARM'];
-  const duration = 5.3;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let width = 1, height = 1;
+  const duration = 3.6;
+  const radius = 24;
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const floor = () => height * .82;
   const resize = () => {
-    w = stage.clientWidth; h = stage.clientHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(1, Math.round(w*dpr));
-    canvas.height = Math.max(1, Math.round(h*dpr));
+    width = Math.max(1, stage.clientWidth);
+    height = Math.max(1, stage.clientHeight);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    if (reduce) draw(0.95,0);
+    if (reduced) render(.28);
   };
-  const smooth = t => { t = Math.max(0,Math.min(1,t)); return t*t*(3-2*t); };
-  function draw(t, index) {
-    ctx.clearRect(0,0,w,h);
-    if (!w || !h) return;
-    // The paper begins flat and physically compresses into a ball. It NEVER unfolds.
-    // Crumple in 0.55s, hit the floor by 0.9s, then roll off left.
-    const crumple = smooth(t/.105);
-    const floor = h*.80;
-    const falling = Math.min(1,Math.max(0,(t-.105)/.065));
-    const travel = Math.max(0,(t-.17)/.83);
-    const x = w*.78-(w+150)*travel;
-    const groundY = floor-21;
-    const y = t < .17
-      ? h*.22 + (groundY-h*.22)*falling*falling
-      : groundY-Math.abs(Math.sin(travel*23))*5*(1-travel);
-    const angle = -.15 + travel*18;
-    const sx = 1-crumple*.67, sy = 1-crumple*.46;
+  function render(t) {
+    ctx.clearRect(0,0,width,height);
+    const ground = floor();
+    ctx.strokeStyle = 'rgba(245,241,232,.26)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();ctx.moveTo(0,ground);ctx.lineTo(width,ground);ctx.stroke();
+
+    // Already crumpled when it enters. Fall under gravity, hit the ground
+    // at 0.42s, squash on impact, then roll left without ever unfolding.
+    const impactTime = .42 / duration;
+    const onGround = t >= impactTime;
+    const u = clamp(t/impactTime);
+    const rolling = clamp((t-impactTime)/(1-impactTime));
+    const startX = width * .81;
+    const x = onGround ? startX - (startX + radius*3)*rolling : startX + 8*u;
+    const y = onGround ? ground-radius : (ground-radius-106) + 106*u*u;
+    const squash = onGround ? .15*Math.exp(-rolling*26)*Math.abs(Math.sin(rolling*52)) : 0;
+    const angle = onGround ? -rolling * (startX + radius*3) / radius : -.3 + u*.45;
+
+    // Contact shadow stays below the falling ball; tighter upon landing.
+    ctx.fillStyle = 'rgba(0,0,0,.4)';
+    ctx.beginPath();
+    ctx.ellipse(x,ground-2,21+(1-u)*5,4.5,0,0,Math.PI*2);ctx.fill();
+
     ctx.save();
-    // Fixed floor contact marker: ball stays grounded after the initial impact.
-    ctx.strokeStyle='rgba(245,241,232,.16)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(0,floor+3);ctx.lineTo(w,floor+3);ctx.stroke();
     ctx.translate(x,y);
     ctx.rotate(angle);
-    ctx.scale(sx,sy);
+    ctx.scale(1+squash,1-squash);
     ctx.fillStyle = '#f5f1e8';
-    ctx.strokeStyle = '#a9a398';
-    ctx.lineWidth = 2.3;
+    ctx.strokeStyle = '#aaa49a';
+    ctx.lineWidth = 2;
+    const points = [[-21,-7],[-15,-17],[-5,-22],[5,-19],[13,-23],[22,-12],[20,-3],[25,8],[14,21],[4,18],[-8,23],[-17,14],[-24,4]];
     ctx.beginPath();
-    const edges = [[-66,-43],[-42,-49],[-19,-42],[11,-50],[45,-43],[65,-27],[62,18],[49,41],[19,45],[-13,36],[-42,46],[-66,24]];
-    for(let i=0;i<edges.length;i++){
-      const [ex,ey]=edges[i];
-      const bump = crumple*7*Math.sin(i*2.6+index);
-      if(i===0)ctx.moveTo(ex+bump,ey);else ctx.lineTo(ex+bump,ey);
-    }
+    points.forEach(([px,py],i) => i ? ctx.lineTo(px,py) : ctx.moveTo(px,py));
     ctx.closePath();ctx.fill();ctx.stroke();
-    ctx.strokeStyle='#8c887d';ctx.lineWidth=1.4;
+    ctx.strokeStyle = '#88847a';ctx.lineWidth = 1.6;
     ctx.beginPath();
-    ctx.moveTo(-55,-35);ctx.lineTo(-22,8);ctx.lineTo(-5,-41);
-    ctx.moveTo(18,-44);ctx.lineTo(8,5);ctx.lineTo(53,-24);
-    ctx.moveTo(-59,21);ctx.lineTo(-7,18);ctx.lineTo(36,39);
-    ctx.moveTo(-33,39);ctx.lineTo(12,-8);ctx.lineTo(54,25);
+    ctx.moveTo(-16,-9);ctx.lineTo(-4,-2);ctx.lineTo(5,-16);
+    ctx.moveTo(5,-16);ctx.lineTo(16,-5);ctx.lineTo(5,6);
+    ctx.moveTo(-18,7);ctx.lineTo(-6,15);ctx.lineTo(5,6);
+    ctx.moveTo(-4,-2);ctx.lineTo(5,6);ctx.lineTo(15,14);
+    ctx.moveTo(-7,15);ctx.lineTo(2,19);ctx.lineTo(15,14);
     ctx.stroke();
-    // Text is visible only while the sheet is flat, and disappears inside the crumple.
-    if(crumple<.65){
-      ctx.globalAlpha=1-smooth(crumple/.65);
-      ctx.fillStyle='#151515';ctx.font='bold 15px Arial, sans-serif';
-      ctx.textAlign='center';ctx.fillText(ideas[index%ideas.length],0,5);
-    }
     ctx.restore();
-  }
-  if (reduce) {
-    new ResizeObserver(resize).observe(stage);
-    resize();draw(.95,0);
-    return;
-  }
-  let start=null,lastCycle=-1;
-  function tick(time){
-    if(start===null)start=time;
-    const s=(time-start)/1000;
-    const cycle=Math.floor(s/duration);
-    const t=(s%duration)/duration;
-    draw(t,cycle%ideas.length);
-    lastCycle=cycle;
-    frame=requestAnimationFrame(tick);
   }
   new ResizeObserver(resize).observe(stage);
   resize();
-  frame=requestAnimationFrame(tick);
-  window.addEventListener('beforeunload',()=>cancelAnimationFrame(frame),{once:true});
+  if (reduced) { render(.28); return; }
+  let origin = null;
+  function tick(now) {
+    if (origin === null) origin = now;
+    render((((now-origin)/1000) % duration)/duration);
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
 })();
