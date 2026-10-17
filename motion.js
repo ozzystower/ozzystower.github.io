@@ -61,13 +61,22 @@
     ctx.clearRect(0,0,w,h);
     if (!w || !h) return;
     // The paper begins flat and physically compresses into a ball. It NEVER unfolds.
-    const crumple = smooth(t/.24);
+    // Crumple in 0.55s, hit the floor by 0.9s, then roll off left.
+    const crumple = smooth(t/.105);
+    const floor = h*.80;
+    const falling = Math.min(1,Math.max(0,(t-.105)/.065));
     const travel = Math.max(0,(t-.17)/.83);
-    const x = w*.75-(w+145)*travel;
-    const y = h*.52 + Math.abs(Math.sin(travel*14))*Math.min(h*.13,18) + crumple*18;
-    const angle = -.17 + travel*14;
+    const x = w*.78-(w+150)*travel;
+    const groundY = floor-21;
+    const y = t < .17
+      ? h*.22 + (groundY-h*.22)*falling*falling
+      : groundY-Math.abs(Math.sin(travel*23))*5*(1-travel);
+    const angle = -.15 + travel*18;
     const sx = 1-crumple*.67, sy = 1-crumple*.46;
     ctx.save();
+    // Fixed floor contact marker: ball stays grounded after the initial impact.
+    ctx.strokeStyle='rgba(245,241,232,.16)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,floor+3);ctx.lineTo(w,floor+3);ctx.stroke();
     ctx.translate(x,y);
     ctx.rotate(angle);
     ctx.scale(sx,sy);
