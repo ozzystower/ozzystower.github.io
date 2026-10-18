@@ -119,7 +119,7 @@
       ctx.beginPath();
       ctx.moveTo(...p[0]);
       ctx.bezierCurveTo(...p[1],...p[2],...p[3]);
-      ctx.lineTo(...p[4]);
+      if (p[4]) ctx.lineTo(...p[4]);
       ctx.stroke();
     });
     // Small organic branch forks instead of large spikes or perfect outlines.
