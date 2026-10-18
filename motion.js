@@ -97,36 +97,49 @@
     ctx.translate(x,y);
     ctx.rotate(angle);
     ctx.scale(1+squash,1-squash);
-    // Sparse, charming mid-century newspaper-cartoon tumbleweed.
-    // Only a handful of loose crooked twigs and generous empty space.
+    // Sparse hand-drawn tumbleweed: a loose rounded bush made of branching stems,
+    // not a geometric ring. Lots of transparent gaps between the twigs.
     ctx.strokeStyle = '#DBFB51';
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    // Rounded, airy Charlie Brown-style twig ring with a sparse interior.
-    const twigs = [
-      [[-30,0],[-25,-15],[-12,-26],[3,-30],[18,-24],[28,-12],[31,3]],
-      [[31,3],[24,19],[10,28],[-6,29],[-21,21],[-30,8]],
-      [[-25,-15],[-10,-9],[8,-19],[24,-14]],
-      [[-30,8],[-15,3],[0,13],[18,8],[29,3]],
-      [[-12,-26],[-6,-11],[9,4],[10,28]],
-      [[18,-24],[12,-8],[-4,5],[-21,21]],
-      [[-21,21],[-8,16],[8,22],[24,19]]
+    const stems = [
+      [[-31,8],[-27,-15],[-8,-30],[9,-28],[28,-13]],
+      [[-34,-4],[-22,-21],[-2,-30],[21,-22],[32,-1]],
+      [[-28,19],[-12,29],[13,25],[30,12]],
+      [[-34,4],[-15,12],[-2,24],[19,25]],
+      [[-24,-23],[-20,-4],[-3,8],[18,20]],
+      [[-7,-31],[0,-14],[16,0],[27,16]],
+      [[23,-24],[11,-10],[-7,0],[-26,20]],
+      [[-26,-8],[-8,-18],[12,-10],[30,4]],
+      [[-15,28],[0,12],[17,7],[31,-7]],
+      [[-29,14],[-14,-2],[4,-1],[19,-18]]
     ];
-    ctx.lineWidth = 2.2;
-    twigs.forEach(points => {
+    ctx.lineWidth = 1.7;
+    stems.forEach((p) => {
       ctx.beginPath();
-      points.forEach(([px,py],i) => i ? ctx.lineTo(px,py) : ctx.moveTo(px,py));
+      ctx.moveTo(...p[0]);
+      ctx.bezierCurveTo(...p[1],...p[2],...p[3]);
+      ctx.lineTo(...p[4]);
       ctx.stroke();
     });
-    ctx.lineWidth = 1.8;
-    [
-      [[-25,-15],[-30,-20]], [[3,-30],[7,-35]],
-      [[18,-24],[25,-28]], [[28,-12],[34,-13]],
-      [[31,3],[37,7]], [[24,19],[28,26]],
-      [[10,28],[11,34]], [[-6,29],[-9,35]],
-      [[-21,21],[-28,26]], [[-30,8],[-36,10]]
-    ].forEach(([p,q]) => {
-      ctx.beginPath();ctx.moveTo(...p);ctx.lineTo(...q);ctx.stroke();
+    // Small organic branch forks instead of large spikes or perfect outlines.
+    const forks = [
+      [[-27,-15],[-34,-20]], [[-8,-30],[-10,-37]],
+      [[9,-28],[16,-33]], [[28,-13],[36,-15]],
+      [[-12,29],[-15,36]], [[13,25],[20,32]],
+      [[-15,12],[-23,17]], [[-3,8],[-6,17]],
+      [[-20,-4],[-30,-3]], [[18,20],[23,30]],
+      [[0,-14],[-5,-23]], [[16,0],[27,-2]],
+      [[11,-10],[15,-21]], [[-7,0],[-15,-9]],
+      [[-8,-18],[-11,-26]], [[12,-10],[21,-16]],
+      [[0,12],[4,22]], [[17,7],[24,13]]
+    ];
+    ctx.lineWidth = 1.3;
+    forks.forEach(([p,q]) => {
+      ctx.beginPath();
+      ctx.moveTo(...p);
+      ctx.quadraticCurveTo((p[0]+q[0])/2+2,(p[1]+q[1])/2-3,...q);
+      ctx.stroke();
     });
     ctx.restore();
   }
