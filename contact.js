@@ -21,5 +21,9 @@ My email is ${email}.
     note.textContent = 'Opening your email app…';
     note.classList.remove('is-error');
     window.location.href = `mailto:dezd24@gmail.com?subject=${subject}&body=${body}`;
+    window.setTimeout(() => {
+      note.innerHTML = 'Nothing opened? <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dezd24%40gmail.com&su=' + subject + '&body=' + body + '" target="_blank" rel="noopener">open Gmail compose</a>.';
+    }, 900);
   });
 })();
+
