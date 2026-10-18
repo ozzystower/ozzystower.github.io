@@ -37,49 +37,91 @@
   }, { passive: true });
 })();
 
+
+
 (() => {
   const canvas = document.querySelector('#tower-paper');
   const stage = document.querySelector('.works-stage');
-  if (!canvas || !stage || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!canvas || !stage) return;
   const ctx = canvas.getContext('2d');
-  let w = 0, h = 0, dpr = 1, last = 0, elapsed = 0, next = 0, frame = 0;
-  const paper = { x: 0, y: 0, angle: 0, phase: 0 };
-  const resize = () => { w = stage.clientWidth; h = stage.clientHeight; dpr = Math.min(devicePixelRatio || 1, 2); canvas.width = w*dpr; canvas.height = h*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); };
-  const draw = () => {
-    ctx.clearRect(0,0,w,h); if (!w) return;
-    ctx.save(); ctx.translate(paper.x,paper.y); ctx.rotate(paper.angle);
-    const wobble = Math.sin(paper.phase * 17) * 2;
-    ctx.fillStyle = '#f5f1e8'; ctx.strokeStyle = '#151515'; ctx.lineWidth = 2;
-    ctx.beginPath();
-    for (let i=0;i<14;i++) {
-      const a = i/14*Math.PI*2;
-      const r = 48 + Math.sin(i*4.7 + paper.phase*9)*8 + (i%3)*3;
-      const px = Math.cos(a)*r + wobble;
-      const py = Math.sin(a)*r*.82;
-      i ? ctx.lineTo(px,py) : ctx.moveTo(px,py);
-    }
-    ctx.closePath(); ctx.fill(); ctx.stroke();
-    ctx.strokeStyle = '#aaa49a'; ctx.lineWidth = 1;
-    for (let i=0;i<6;i++) {
-      const a = i/6*Math.PI*2 + paper.phase*.35;
-      ctx.beginPath(); ctx.moveTo(Math.cos(a)*8,Math.sin(a)*7); ctx.lineTo(Math.cos(a+.65)*42,Math.sin(a+.65)*34); ctx.stroke();
-    }
-    ctx.fillStyle = '#151515'; ctx.font = '700 15px Arial, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('ozzystower',0,7);
-    ctx.restore();
+  if (!ctx) return;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let width = 1, height = 1;
+  const duration = 3.6;
+  const radius = 24;
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const floor = () => height * .82;
+  const resize = () => {
+    width = Math.max(1, stage.clientWidth);
+    height = Math.max(1, stage.clientHeight);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    if (reduced) render(.28);
   };
-  const tick = (now) => {
-    if (document.hidden) { frame = requestAnimationFrame(tick); return; }
-    const dt = Math.min((now-last)/1000 || 0, .04); last = now; elapsed += dt;
-    if (elapsed >= next) { paper.x = w + 90; paper.y = h*.78; paper.angle = -.2; paper.phase = 0; next = elapsed + 4.2; }
-    if (paper.x > -100) {
-      paper.phase += dt;
-      if (paper.phase < .8) { const t=paper.phase/.8; paper.x=(w+90)+(w*.72-w-90)*t; paper.y=h*.78-Math.abs(Math.sin(t*8))*10; paper.angle=-.2+t*2.6; }
-      else { const t=Math.min((paper.phase-.8)/3.4,1); paper.x=w*.72+(-w*.52-w*.72)*t; paper.y=h*.78-Math.abs(Math.sin(t*10.5 + .4))*9-Math.max(0,Math.sin(t*5.5))*4; paper.angle=.9-t*12.5; }
-      if (paper.phase>4.2) paper.x=-120;
-    }
-    draw(); frame=requestAnimationFrame(tick);
-  };
-  new ResizeObserver(resize).observe(stage); resize(); next=.3; frame=requestAnimationFrame(tick);
-  window.addEventListener('beforeunload',()=>cancelAnimationFrame(frame),{once:true});
-})();
+  function render(t) {
+    ctx.clearRect(0,0,width,height);
+    const ground = floor();
+    ctx.strokeStyle = 'rgba(245,241,232,.26)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();ctx.moveTo(0,ground);ctx.lineTo(width,ground);ctx.stroke();
 
+    // A permanent crumpled-paper tumbleweed: wind gusts, brief skitters,
+    // tiny hops, and lots of grounded rolling. Never opens or becomes flat.
+    const impactTime = .36 / duration;
+    const u = clamp(t / impactTime);
+    const rolling = clamp((t-impactTime)/(1-impactTime));
+    const startX = width * .85;
+    const distance = startX + radius * 3;
+    // Wind gusts vary the speed without reversing the ball's direction.
+    const drift = rolling + .018*Math.sin(rolling*14)*Math.sin(Math.PI*rolling)
+      + .009*Math.sin(rolling*31)*Math.sin(Math.PI*rolling);
+    const x = t < impactTime ? startX + 5*u : startX-distance*clamp(drift);
+    // Keep the ball touching ground except for three short wind-lifted hops.
+    const gust1 = Math.pow(Math.max(0,1-Math.abs(rolling-.21)/.065),2)*10;
+    const gust2 = Math.pow(Math.max(0,1-Math.abs(rolling-.49)/.05),2)*7;
+    const gust3 = Math.pow(Math.max(0,1-Math.abs(rolling-.73)/.055),2)*11;
+    const hop = gust1+gust2+gust3;
+    const y = t < impactTime ? ground-radius-78*(1-u*u) : ground-radius-hop;
+    const squash = t >= impactTime ? .11*Math.exp(-rolling*28)*Math.abs(Math.sin(rolling*42)) : 0;
+    const angle = t < impactTime ? -.3+u*.5 : -distance*clamp(drift)/radius
+      + .09*Math.sin(rolling*21);
+
+    // Contact shadow stays below the falling ball; tighter upon landing.
+    ctx.fillStyle = 'rgba(0,0,0,.4)';
+    ctx.beginPath();
+    ctx.ellipse(x,ground-2,21+(1-u)*5+hop*0.15,4.5,0,0,Math.PI*2);ctx.fill();
+
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(angle);
+    ctx.scale(1+squash,1-squash);
+    ctx.fillStyle = '#DBFB51';
+    ctx.strokeStyle = '#aaa49a';
+    ctx.lineWidth = 2;
+    const points = [[-21,-7],[-15,-17],[-5,-22],[5,-19],[13,-23],[22,-12],[20,-3],[25,8],[14,21],[4,18],[-8,23],[-17,14],[-24,4]];
+    ctx.beginPath();
+    points.forEach(([px,py],i) => i ? ctx.lineTo(px,py) : ctx.moveTo(px,py));
+    ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.strokeStyle = '#88847a';ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(-16,-9);ctx.lineTo(-4,-2);ctx.lineTo(5,-16);
+    ctx.moveTo(5,-16);ctx.lineTo(16,-5);ctx.lineTo(5,6);
+    ctx.moveTo(-18,7);ctx.lineTo(-6,15);ctx.lineTo(5,6);
+    ctx.moveTo(-4,-2);ctx.lineTo(5,6);ctx.lineTo(15,14);
+    ctx.moveTo(-7,15);ctx.lineTo(2,19);ctx.lineTo(15,14);
+    ctx.stroke();
+    ctx.restore();
+  }
+  new ResizeObserver(resize).observe(stage);
+  resize();
+  if (reduced) { render(.28); return; }
+  let origin = null;
+  function tick(now) {
+    if (origin === null) origin = now;
+    render((((now-origin)/1000) % duration)/duration);
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
