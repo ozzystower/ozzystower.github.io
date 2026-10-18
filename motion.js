@@ -97,52 +97,37 @@
     ctx.translate(x,y);
     ctx.rotate(angle);
     ctx.scale(1+squash,1-squash);
-    // Open, irregular, twig-like silhouette is what makes this read as a tumbleweed.
-    // Paper ribbons stand in for branches; it is never a solid ball or flat sheet.
+    // Sparse, charming mid-century newspaper-cartoon tumbleweed.
+    // Only a handful of loose crooked twigs and generous empty space.
     ctx.strokeStyle = '#DBFB51';
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    for (let i = 0; i < 23; i++) {
-      const phi = i * 2.3999632297;
-      const outer = radius * (.82 + .19 * Math.sin(i * 4.7));
-      const inner = radius * (.13 + .22 * ((i % 4) / 3));
-      const ox = Math.cos(phi) * outer;
-      const oy = Math.sin(phi) * outer;
-      const ix = Math.cos(phi + .64) * inner;
-      const iy = Math.sin(phi + .64) * inner;
-      ctx.lineWidth = i % 5 === 0 ? 3.4 : 2.1;
+    const twigs = [
+      [[-26,-7],[-14,-19],[1,-12],[17,-23],[29,-14]],
+      [[-31,7],[-16,1],[-2,12],[17,7],[31,13]],
+      [[-19,-26],[-10,-9],[7,1],[19,25]],
+      [[4,-30],[11,-16],[-6,-2],[-20,20]],
+      [[-29,-16],[-12,-8],[8,-21],[26,-5]],
+      [[-23,23],[-9,15],[9,23],[25,16]],
+      [[-5,-25],[-19,-3],[-6,23]],
+      [[23,-21],[13,-2],[29,3]]
+    ];
+    ctx.lineWidth = 2.3;
+    twigs.forEach((points) => {
       ctx.beginPath();
-      ctx.moveTo(ix, iy);
-      ctx.quadraticCurveTo(
-        Math.cos(phi - .4) * radius * .76,
-        Math.sin(phi - .4) * radius * .76,
-        ox, oy
-      );
+      points.forEach(([px,py],i) => i ? ctx.lineTo(px,py) : ctx.moveTo(px,py));
       ctx.stroke();
-      // Forked scraps give the outline its unmistakable tumbleweed spikiness.
-      if (i % 2 === 0) {
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
-        ctx.moveTo(ox * .75, oy * .75);
-        ctx.lineTo(ox + 8 * Math.cos(phi + .63), oy + 8 * Math.sin(phi + .63));
-        ctx.stroke();
-      }
-    }
-    ctx.lineWidth = 2;
-    for (let i = 0; i < 9; i++) {
-      const p = i * 2.1;
-      ctx.beginPath();
-      ctx.ellipse(Math.sin(p) * 5, Math.cos(p) * 5,
-        radius * (.50 + .08 * (i % 3)), radius * (.28 + .07 * (i % 4)),
-        p, .1, Math.PI * 1.7);
-      ctx.stroke();
-    }
-    // A few angular creases preserve the "crumpled paper" concept.
-    ctx.lineWidth = 1.4;
-    ctx.beginPath();
-    ctx.moveTo(-17, 3);ctx.lineTo(-4, -10);ctx.lineTo(10, 5);
-    ctx.moveTo(-8, 14);ctx.lineTo(5, 2);ctx.lineTo(19, 13);
-    ctx.stroke();
+    });
+    // Just a few little offshoots. No filled center or dense spirals.
+    ctx.lineWidth = 1.8;
+    [
+      [[-14,-19],[-22,-24]], [[17,-23],[23,-30]],
+      [[-16,1],[-26,-2]], [[17,7],[25,0]],
+      [[-10,-9],[-4,-19]], [[19,25],[27,29]],
+      [[-9,15],[-16,27]], [[13,-2],[20,-9]]
+    ].forEach((segment) => {
+      ctx.beginPath();ctx.moveTo(...segment[0]);ctx.lineTo(...segment[1]);ctx.stroke();
+    });
     ctx.restore();
   }
   new ResizeObserver(resize).observe(stage);
