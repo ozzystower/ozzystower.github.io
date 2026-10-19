@@ -20,6 +20,6 @@ My email is ${email}.
 `);
     note.textContent = 'Opening your email app…';
     note.classList.remove('is-error');
-    window.location.href = `mailto:dezd24@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:info@ozzystower.com?subject=${subject}&body=${body}`;
   });
 })();
