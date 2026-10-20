@@ -118,3 +118,5 @@ h1 { max-width: 980px; margin: 0; font-size: clamp(3.2rem, 8vw, 8.5rem); font-we
 @keyframes tower-bob { 0%,100% { transform: translateY(3px) rotate(-1deg); } 50% { transform: translateY(-10px) rotate(1deg); } }
 @media (max-width: 700px) { .tower-boxes { gap: 10px; padding-inline: 4px; min-height: 180px; } .tower-box { min-height: 100px; } .tower-box__mark { font-size: clamp(3rem, 15vw, 5rem); } .tower-box__fastener { width: 6px; height: 6px; border-width: 1px; } }
 @media (prefers-reduced-motion: reduce) { .tower-box { animation: none; } }
+
+.tower-box { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
