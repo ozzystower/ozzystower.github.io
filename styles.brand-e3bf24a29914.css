@@ -156,3 +156,6 @@ h1 { max-width: 980px; margin: 0; font-size: clamp(3.2rem, 8vw, 8.5rem); font-we
   .tower-project { width: min(340px, 86vw); min-height: 88px; padding-inline: 8px; }
   .tower-project small { max-width: 310px; }
 }
+
+.tower-box:hover,
+.tower-box:focus-visible { filter: none; }
