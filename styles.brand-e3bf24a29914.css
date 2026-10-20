@@ -127,3 +127,14 @@ h1 { max-width: 980px; margin: 0; font-size: clamp(3.2rem, 8vw, 8.5rem); font-we
 .tower-project strong,.tower-project small { display: block; }
 .tower-project strong { color: var(--accent); font-size: clamp(1rem, 2vw, 1.35rem); line-height: 1; }
 .tower-project small { margin-top: 6px; color: var(--ink); font-size: .78rem; line-height: 1.2; }
+
+.tower-box { appearance: none; -webkit-appearance: none; }
+.tower-project { width: min(320px, 260%); min-height: 82px; padding: 0 14px 12px; background: transparent; box-shadow: none; }
+.tower-project::after { display: none; }
+.tower-project strong { white-space: nowrap; }
+.tower-project small { max-width: 290px; margin-inline: auto; }
+@media (max-width: 700px) {
+  .tower-project { width: min(300px, 72vw); min-height: 76px; padding-inline: 8px; }
+  .tower-project strong { font-size: 1rem; }
+  .tower-project small { font-size: .72rem; }
+}
