@@ -146,3 +146,13 @@ h1 { max-width: 980px; margin: 0; font-size: clamp(3.2rem, 8vw, 8.5rem); font-we
   .tower-project { width: min(320px, 78vw); }
   .tower-project small { max-width: 300px; }
 }
+
+.tower-project,
+.tower-project * { background: transparent !important; border: 0 !important; box-shadow: none !important; text-shadow: none !important; }
+.tower-project { width: min(520px, 420%); min-height: 104px; padding: 0 20px 14px; outline: 0; }
+.tower-project strong { display: block; white-space: nowrap; }
+.tower-project small { display: block; max-width: 440px; margin: 8px auto 0; }
+@media (max-width: 700px) {
+  .tower-project { width: min(340px, 86vw); min-height: 88px; padding-inline: 8px; }
+  .tower-project small { max-width: 310px; }
+}
