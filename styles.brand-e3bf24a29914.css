@@ -120,3 +120,10 @@ h1 { max-width: 980px; margin: 0; font-size: clamp(3.2rem, 8vw, 8.5rem); font-we
 @media (prefers-reduced-motion: reduce) { .tower-box { animation: none; } }
 
 .tower-box { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+.tower-box { overflow: visible; }
+.tower-project { position: absolute; z-index: 5; left: 50%; bottom: calc(100% - 2px); width: min(220px, 180%); margin: 0; border: 0; padding: 0 0 12px; transform: translateX(-50%); text-align: center; pointer-events: none; }
+.tower-project::after { content: ""; position: absolute; left: 50%; bottom: 0; width: 1px; height: 10px; background: var(--accent); }
+.tower-project strong,.tower-project small { display: block; }
+.tower-project strong { color: var(--accent); font-size: clamp(1rem, 2vw, 1.35rem); line-height: 1; }
+.tower-project small { margin-top: 6px; color: var(--ink); font-size: .78rem; line-height: 1.2; }
