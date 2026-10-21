@@ -159,3 +159,19 @@ h1 { max-width: 980px; margin: 0; font-size: clamp(3.2rem, 8vw, 8.5rem); font-we
 
 .tower-box:hover,
 .tower-box:focus-visible { filter: none; }
+
+
+.header-tools { display: flex; align-items: center; gap: 22px; }
+.header-merch { color: var(--accent); font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; }
+.header-merch:hover, .header-merch:focus-visible { color: var(--ink); }
+.merch { display: grid; grid-template-columns: 1fr 2fr; gap: 24px; padding: 48px 0; border-top: 1px solid var(--line); }
+.merch p { max-width: 680px; margin: 0 0 18px; font-size: clamp(1.2rem, 2vw, 1.8rem); letter-spacing: -.03em; line-height: 1.15; }
+.merch-note { color: var(--muted); font-size: .85rem !important; letter-spacing: 0 !important; }
+@media (max-width: 700px) {
+  .header-tools { gap: 12px; }
+  .header-merch { font-size: .68rem; }
+  .merch { grid-template-columns: 1fr; gap: 8px; }
+  .works-stage { height: 360px; }
+  .tower-boxes { min-height: 190px; }
+  .tower-project { top: calc(100% + 14px); bottom: auto; }
+}
