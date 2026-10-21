@@ -183,3 +183,18 @@ h1 { max-width: 980px; margin: 0; font-size: clamp(3.2rem, 8vw, 8.5rem); font-we
   .tower-boxes { min-height: 190px; }
   .tower-project { top: calc(100% + 14px); bottom: auto; }
 }
+
+
+/* Mobile spacing and sharp city label cleanup. */
+.citymark-text { display: none; }
+@media (max-width: 700px) {
+  .citymark-image { display: none; }
+  .citymark-text { display: block; height: auto; color: var(--accent); font-size: 0.68rem; line-height: 1; letter-spacing: 0.08em; white-space: nowrap; }
+  .works { padding-top: 24px; padding-bottom: 24px; }
+  .works .section-label { margin-bottom: 10px; }
+  .works-stage { height: 290px; }
+  .tower-boxes { min-height: 170px; padding-top: 82px; padding-bottom: 0; }
+  .tower-project { top: auto; bottom: calc(100% + 18px); min-height: 0; padding-bottom: 0; }
+  .tower-project strong { line-height: 1.08; }
+  .tower-project small { margin-top: 5px; }
+}
