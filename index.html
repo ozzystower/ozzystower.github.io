@@ -8,6 +8,16 @@
   <link rel="stylesheet" href="styles.brand-e3bf24a29914.css?v=wordmark-colorways-2">
   <script src="contact.js?v=4" defer></script>
   <script src="motion.js?v=20261019-1" defer></script>
+  <style>
+.site-header{width:min(1180px,calc(100% - 48px));margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:8px 0;overflow:visible}
+.wordmark{display:block;flex:0 1 420px;min-width:0;line-height:0;text-decoration:none}
+.wordmark-rotator{position:relative;display:block;width:100%;aspect-ratio:2/1;overflow:hidden}
+.wordmark-logo{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;opacity:0;animation:wordmark-color-cycle 20s steps(1,end) infinite}
+.wordmark-logo--white{opacity:1}.wordmark-logo--orange{animation-delay:5s}.wordmark-logo--blue{animation-delay:10s}.wordmark-logo--pink{animation-delay:15s}
+@keyframes wordmark-color-cycle{0%,24.99%{opacity:1}25%,100%{opacity:0}}
+@media(max-width:700px){.site-header{width:calc(100% - 32px);gap:12px}.wordmark{flex-basis:260px}}
+@media(prefers-reduced-motion:reduce){.wordmark-logo{animation:none;opacity:0}.wordmark-logo--white{opacity:1}}
+</style>
 </head>
 <body>
   <header class="site-header">
