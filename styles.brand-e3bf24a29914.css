@@ -81,12 +81,14 @@ h1 { max-width: 980px; margin: 0; font-size: clamp(3.2rem, 8vw, 8.5rem); font-we
 .contact-form { margin-top: 36px; max-width: 680px; }
 .contact-form label { display: block; margin-bottom: 10px; color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
 .email-row { display: flex; gap: 10px; }
-.contact-form input[type="email"] { min-width: 0; flex: 1; border: 1px solid var(--line); border-radius: 0; padding: 14px 16px; background: transparent; color: var(--ink); font: inherit; }
+.contact-form input[type="email"], .contact-form textarea { display: block; width: 100%; border: 1px solid var(--line); border-radius: 0; padding: 14px 16px; background: transparent; color: var(--ink); font: inherit; }
+.contact-form textarea { min-height: 112px; margin-bottom: 10px; resize: vertical; }
 .contact-form button { border: 1px solid var(--accent); border-radius: 0; padding: 14px 16px; background: var(--accent); color: var(--bg); font: inherit; font-weight: 700; cursor: pointer; }
 .contact-form button:hover,.contact-form button:focus-visible { background: var(--ink); border-color: var(--ink); }
 .form-note:empty { display: none; }
 .form-note { color: var(--muted); font-size: 0.8rem !important; letter-spacing: 0 !important; }
 .form-note.is-error { color: #ff9d9d; }
+.character-count { align-self: center; margin-right: auto; color: var(--muted); font-size: .75rem; letter-spacing: .04em; }
 .trap { position: absolute; left: -9999px; opacity: 0; }
 .manifesto,.works,.contact { opacity: 0; transform: translateY(22px) rotate(-0.5deg); transition: opacity 520ms ease, transform 700ms cubic-bezier(.22,.8,.24,1); }
 .manifesto.is-visible,.works.is-visible,.contact.is-visible { opacity: 1; transform: none; }
